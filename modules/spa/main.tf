@@ -58,6 +58,13 @@ resource "aws_s3_bucket_public_access_block" "s3block" {
   restrict_public_buckets = true
 }
 
+resource "aws_cloudfront_function" "fn" {
+  name    = "spa_fn"
+  runtime = "cloudfront-js-1.0"
+  publish = true
+  code    = file("${path.module}/functionToRewrite.js")
+}
+
 resource "aws_cloudfront_distribution" "cf" {
   enabled             = true
   aliases             = [var.endpoint]
@@ -74,7 +81,7 @@ resource "aws_cloudfront_distribution" "cf" {
     }
   }
 
-  custom_error_response {
+ /*  custom_error_response {
     error_code         = 403
     response_code      = 200
     response_page_path = "/index.html"
@@ -86,7 +93,7 @@ resource "aws_cloudfront_distribution" "cf" {
     response_code      = 200
     response_page_path = "/index.html"
     error_caching_min_ttl = 604800
-  }
+  } */
 
   default_cache_behavior {
     allowed_methods        = var.allowed_methods
@@ -107,6 +114,11 @@ resource "aws_cloudfront_distribution" "cf" {
     min_ttl                = 3600
     default_ttl            = 604800
     max_ttl                = 31556952
+
+    function_association {
+      event_type = "viewer-request"
+      function_arn = aws_cloudfront_function.fn.arn
+    }
   }
 
   restrictions {

@@ -1,1 +1,6 @@
 .history
+.idea
+*.iml
+.terraform
+.env
+spa.tfplan

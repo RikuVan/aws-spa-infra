@@ -12,7 +12,7 @@ const scriptHash = `sha256-${hash}`
 
 console.log(`Generated hash: ${scriptHash}`)
 
-let html = fs.readFileSync('../app/index.html', 'utf-8')
+let html = fs.readFileSync('../app/index_template.html', 'utf-8')
 
 html = html.replace('{{CSP_HASH}}', scriptHash)
 

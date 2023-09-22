@@ -1,12 +1,28 @@
 function handler(event) {
-    var response = event.response;
-    var headers = response.headers;
+  var response = event.response
+  var headers = response.headers
 
-    var scriptHash = "sha256-w1EbJKI4wFD9MhNIT2xnVkE9chgUnVsk4Vqc1yWlGS0=";
+  if ('x-amz-meta-csp' in headers) {
+    // Extract the value of the X-Amz-Meta-Csp header
+    var cspValue = headers['x-amz-meta-csp'].value
+
+    var cspHeaderValue =
+      "default-src 'self'; style-src-elem 'self' https://cdn.jsdelivr.net; img-src 'self' https://images.dog.ceo; script-src 'self' " +
+      cspValue +
+      ';'
 
     headers['content-security-policy'] = {
-        value: `default-src 'self'; style-src-elem 'self' https://cdn.jsdelivr.net; img-src 'self' https://images.dog.ceo; script-src 'self' '${scriptHash}'`
-    };
+      value: cspHeaderValue,
+    }
 
-    return response;
+    delete headers['x-amz-meta-csp']
+  } else {
+    headers['content-security-policy'] = {
+      value:
+        "default-src 'self'; style-src-elem 'self' https://cdn.jsdelivr.net; img-src 'self' https://images.dog.ceo; script-src 'self';",
+    }
+  }
+
+  return response
 }
+    

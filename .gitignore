@@ -4,3 +4,4 @@
 .terraform
 .env
 spa.tfplan
+node_modules

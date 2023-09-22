@@ -1,20 +1,12 @@
-'use strict'
-
 function handler(event) {
-  var response = event.response
-  var headers = response.headers
+    var response = event.response;
+    var headers = response.headers;
 
-  headers['strict-transport-security'] = {
-    value: 'max-age=31536000;includeSubdomains;preload',
-  }
+    var scriptHash = "sha256-w1EbJKI4wFD9MhNIT2xnVkE9chgUnVsk4Vqc1yWlGS0=";
 
-  headers['x-content-type-options'] = {
-    value: 'nosniff',
-  }
+    headers['content-security-policy'] = {
+        value: `default-src 'self'; style-src-elem 'self' https://cdn.jsdelivr.net; img-src 'self' https://images.dog.ceo; script-src 'self' '${scriptHash}'`
+    };
 
-  headers['x-xss-protection'] = { value: '1;mode=block' }
-
-  headers['referrer-policy'] = { value: 'same-origin' }
-
-  return response
+    return response;
 }

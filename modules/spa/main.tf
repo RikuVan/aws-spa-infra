@@ -62,7 +62,7 @@ resource "aws_cloudfront_function" "fn" {
   name    = "spa_fn"
   runtime = "cloudfront-js-1.0"
   publish = true
-  code    = file("${path.module}/functionToRewrite.js")
+  code    = file("${path.module}/functionToAddHeaders.js")
 }
 
 resource "aws_cloudfront_distribution" "cf" {
@@ -81,7 +81,7 @@ resource "aws_cloudfront_distribution" "cf" {
     }
   }
 
- /*  custom_error_response {
+ custom_error_response {
     error_code         = 403
     response_code      = 200
     response_page_path = "/index.html"
@@ -93,7 +93,7 @@ resource "aws_cloudfront_distribution" "cf" {
     response_code      = 200
     response_page_path = "/index.html"
     error_caching_min_ttl = 604800
-  } */
+  }
 
   default_cache_behavior {
     allowed_methods        = var.allowed_methods
@@ -116,7 +116,7 @@ resource "aws_cloudfront_distribution" "cf" {
     max_ttl                = 31556952
 
     function_association {
-      event_type = "viewer-request"
+      event_type = "viewer-response"
       function_arn = aws_cloudfront_function.fn.arn
     }
   }

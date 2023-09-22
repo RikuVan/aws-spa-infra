@@ -5,7 +5,7 @@ function handler(event) {
     var scriptHash = "{{CSP_HASH}}";
 
     headers['content-security-policy'] = {
-        value: `default-src 'self'; img-src 'self' https://images.dog.ceo; script-src 'self' '${scriptHash}'`
+        value: `default-src 'self'; style-src-elem https://cdn.jsdelivr.net; img-src 'self' https://images.dog.ceo; script-src 'self' '${scriptHash}'`
     };
 
     return response;

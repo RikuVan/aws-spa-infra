@@ -8,5 +8,8 @@ plan: init
 init:
 	terraform init
 
+hash:
+	cd csp && npm run hashjs
+
 lint:
 	terraform validate

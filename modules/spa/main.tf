@@ -88,19 +88,18 @@ resource "aws_cloudfront_distribution" "cf" {
     }
   }
 
-
- custom_error_response {
+  custom_error_response {
     error_code         = 403
     response_code      = 200
     response_page_path = "/index.html"
-    error_caching_min_ttl = 604800
+    error_caching_min_ttl = 0
   }
 
   custom_error_response {
     error_code         = 404
     response_code      = 200
     response_page_path = "/index.html"
-    error_caching_min_ttl = 604800
+    error_caching_min_ttl = 0
   }
 
   default_cache_behavior {
@@ -127,7 +126,7 @@ resource "aws_cloudfront_distribution" "cf" {
       function_arn = aws_cloudfront_function.headers_fn.arn
     }
 
-     function_association {
+    function_association {
       event_type = "viewer-request"
       function_arn = aws_cloudfront_function.rewrite_fn.arn
     }

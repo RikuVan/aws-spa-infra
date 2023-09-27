@@ -121,6 +121,7 @@ resource "aws_cloudfront_distribution" "cf" {
     min_ttl                = 3600
     default_ttl            = 604800
     max_ttl                = 31556952
+    
     function_association {
       event_type = "viewer-response"
       function_arn = aws_cloudfront_function.headers_fn.arn

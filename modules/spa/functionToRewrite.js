@@ -3,22 +3,13 @@
 function handler(event) {
   var request = event.request
 
-  'use strict'
+  var regexPattern = /\.(?:[a-z]{2,4}|webmanifest)$/
 
-  function handler(event) {
-    var request = event.request
-
-    var regexPattern = /\.[a-zA-Z]{2,4}$/
-
-    if (regexPattern.test(request.uri)) {
-      return request
-    }
-
-    request.uri = '/index.html'
-
+  if (regexPattern.test(request.uri)) {
     return request
   }
-  // Otherwise, modify the request to fetch index.html
+
   request.uri = '/index.html'
+
   return request
 }
